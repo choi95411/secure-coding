@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}사용자 프로필{% endblock %}
+{% block content %}<h1>{{ profile_user.profile.display_name }}</h1><p class="text-muted">@{{ profile_user.username }}</p><p>{{ profile_user.profile.bio|default:"소개가 없습니다." }}</p>{% endblock %}

@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}마이페이지{% endblock %}
+{% block content %}<h1>마이페이지</h1><dl class="row"><dt class="col-sm-3">아이디</dt><dd class="col-sm-9">{{ user.username }}</dd><dt class="col-sm-3">표시 이름</dt><dd class="col-sm-9">{{ user.profile.display_name }}</dd><dt class="col-sm-3">소개</dt><dd class="col-sm-9">{{ user.profile.bio|default:"소개가 없습니다." }}</dd></dl><a class="btn btn-primary" href="{% url 'users:profile_edit' %}">프로필 수정</a> <a class="btn btn-outline-secondary" href="{% url 'users:password_change' %}">비밀번호 변경</a>{% endblock %}
