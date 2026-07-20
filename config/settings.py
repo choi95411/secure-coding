@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "users.apps.UsersConfig",
     "products.apps.ProductsConfig",
+    "wallets.apps.WalletsConfig",
 ]
 
 MIDDLEWARE = [
@@ -109,6 +110,7 @@ SECURE_HSTS_PRELOAD = SECURE_HSTS_SECONDS > 0
 SESSION_COOKIE_SECURE = not DEBUG and SECURE_SSL_REDIRECT
 CSRF_COOKIE_SECURE = not DEBUG and SECURE_SSL_REDIRECT
 
+INITIAL_WALLET_POINTS = int(os.getenv("INITIAL_WALLET_POINTS", "10000"))
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
 CHANNEL_LAYERS = {
     "default": {

@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}지갑{% endblock %}{% block content %}
+<h1>내 지갑</h1><p class="display-6">{{ user.wallet.balance }} 포인트</p><a class="btn btn-primary" href="{% url 'wallets:transfer' %}">송금</a>
+<h2 class="h4 mt-4">보낸 내역</h2><ul>{% for transfer in transfers %}<li>{{ transfer.recipient.username }} · {{ transfer.amount }} · {{ transfer.get_status_display }}</li>{% empty %}<li>없음</li>{% endfor %}</ul>
+<h2 class="h4">받은 내역</h2><ul>{% for transfer in received %}<li>{{ transfer.sender.username }} · {{ transfer.amount }} · {{ transfer.get_status_display }}</li>{% empty %}<li>없음</li>{% endfor %}</ul>
+{% endblock %}

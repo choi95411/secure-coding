@@ -4,7 +4,8 @@
 
 - `config/`: Django settings, root URLs, ASGI/WSGI entry points
 - `users/`: authentication, profiles, account status
-- `products/`: product CRUD, images, public search
+- products/: product CRUD, images, public search
+- wallets/: point wallets, transfers, immutable ledger
 - `templates/`: server-rendered Bootstrap templates
 - `docs/`: requirements, design, security, testing, progress, ADRs
 
@@ -15,7 +16,7 @@
 - Test: `.venv/bin/pytest`
 - Lint: `.venv/bin/ruff check .`
 - Format check: `.venv/bin/ruff format --check .`
-- Security: `.venv/bin/bandit -c pyproject.toml -r config users products`
+- Security: `.venv/bin/bandit -c pyproject.toml -r config users products wallets`
 
 ## Rules
 

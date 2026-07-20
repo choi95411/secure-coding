@@ -15,6 +15,7 @@
       {% if user.is_authenticated %}
         <a class="btn btn-sm btn-outline-light" href="{% url 'products:create' %}">상품 등록</a>
         <a class="btn btn-sm btn-outline-light" href="{% url 'products:mine' %}">내 상품</a>
+        <a class="btn btn-sm btn-outline-light" href="{% url 'wallets:detail' %}">지갑</a>
         <a class="btn btn-sm btn-outline-light" href="{% url 'users:mypage' %}">마이페이지</a>
         {% if user.is_staff %}<a class="btn btn-sm btn-warning" href="{% url 'admin:index' %}">관리자</a>{% endif %}
         <form method="post" action="{% url 'users:logout' %}" class="m-0">{% csrf_token %}<button class="btn btn-sm btn-danger">로그아웃</button></form>
