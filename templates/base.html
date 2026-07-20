@@ -11,14 +11,21 @@
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark mb-4">
   <div class="container">
     <a class="navbar-brand" href="{% url 'products:list' %}">Tiny Market</a>
-    <div class="d-flex gap-2 align-items-center">
+    <div class="d-flex gap-2 align-items-center flex-wrap justify-content-end">
       {% if user.is_authenticated %}
         <a class="btn btn-sm btn-outline-light" href="{% url 'products:create' %}">상품 등록</a>
         <a class="btn btn-sm btn-outline-light" href="{% url 'products:mine' %}">내 상품</a>
         <a class="btn btn-sm btn-outline-light" href="{% url 'wallets:detail' %}">지갑</a>
+        <a class="btn btn-sm btn-outline-light" href="{% url 'chat:list' %}">채팅</a>
         <a class="btn btn-sm btn-outline-light" href="{% url 'users:mypage' %}">마이페이지</a>
-        {% if user.is_staff %}<a class="btn btn-sm btn-warning" href="{% url 'moderation:dashboard' %}">신고 관리</a><a class="btn btn-sm btn-warning" href="{% url 'adjustments:list' %}">지갑 조정</a><a class="btn btn-sm btn-warning" href="{% url 'admin:index' %}">관리자</a>{% endif %}
-        <form method="post" action="{% url 'users:logout' %}" class="m-0">{% csrf_token %}<button class="btn btn-sm btn-danger">로그아웃</button></form>
+        {% if user.is_staff %}
+          <a class="btn btn-sm btn-warning" href="{% url 'moderation:dashboard' %}">신고 관리</a>
+          <a class="btn btn-sm btn-warning" href="{% url 'adjustments:list' %}">지갑 조정</a>
+          <a class="btn btn-sm btn-warning" href="{% url 'admin:index' %}">관리자</a>
+        {% endif %}
+        <form method="post" action="{% url 'users:logout' %}" class="m-0">
+          {% csrf_token %}<button class="btn btn-sm btn-danger">로그아웃</button>
+        </form>
       {% else %}
         <a class="btn btn-sm btn-outline-light" href="{% url 'users:login' %}">로그인</a>
         <a class="btn btn-sm btn-success" href="{% url 'users:signup' %}">회원가입</a>
@@ -27,7 +34,9 @@
   </div>
 </nav>
 <main class="container pb-5">
-  {% for message in messages %}<div class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</div>{% endfor %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</div>
+  {% endfor %}
   {% block content %}{% endblock %}
 </main>
 </body>

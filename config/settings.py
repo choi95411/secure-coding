@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     "wallets.apps.WalletsConfig",
     "moderation.apps.ModerationConfig",
     "adjustments.apps.AdjustmentsConfig",
+    "chat.apps.ChatConfig",
+    "security_controls.apps.SecurityControlsConfig",
 ]
 
 MIDDLEWARE = [
@@ -114,6 +116,10 @@ CSRF_COOKIE_SECURE = not DEBUG and SECURE_SSL_REDIRECT
 
 INITIAL_WALLET_POINTS = int(os.getenv("INITIAL_WALLET_POINTS", "10000"))
 REPORT_BLOCK_THRESHOLD = int(os.getenv("REPORT_BLOCK_THRESHOLD", "3"))
+CHAT_MESSAGES_PER_MINUTE = int(os.getenv("CHAT_MESSAGES_PER_MINUTE", "20"))
+LOGIN_MAX_FAILURES = int(os.getenv("LOGIN_MAX_FAILURES", "5"))
+LOGIN_FAILURE_WINDOW_SECONDS = int(os.getenv("LOGIN_FAILURE_WINDOW_SECONDS", "300"))
+LOGIN_LOCK_SECONDS = int(os.getenv("LOGIN_LOCK_SECONDS", "900"))
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
 CHANNEL_LAYERS = {
     "default": {

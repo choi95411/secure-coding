@@ -4,8 +4,12 @@
 
 - `config/`: Django settings, root URLs, ASGI/WSGI entry points
 - `users/`: authentication, profiles, account status
-- products/: product CRUD, images, public search
-- wallets/: point wallets, transfers, immutable ledger
+- `products/`: product CRUD, images, public search
+- `wallets/`: point wallets, transfers, immutable ledger
+- `moderation/`: reports, sanctions, administrator audit records
+- `adjustments/`: audited administrator point adjustments
+- `chat/`: global/direct conversations, persisted messages, WebSockets
+- `security_controls/`: privacy-preserving login throttling
 - `templates/`: server-rendered Bootstrap templates
 - `docs/`: requirements, design, security, testing, progress, ADRs
 
@@ -16,15 +20,15 @@
 - Test: `.venv/bin/pytest`
 - Lint: `.venv/bin/ruff check .`
 - Format check: `.venv/bin/ruff format --check .`
-- Security: `.venv/bin/bandit -c pyproject.toml -r config users products wallets moderation adjustments`
+- Security: `.venv/bin/bandit -c pyproject.toml -r config users products wallets moderation adjustments chat security_controls`
 
 ## Rules
 
-- Keep authorization and object ownership checks on the server.
+- Keep authorization, ownership, participant, account-status, and administrator checks on the server.
 - Use Django ORM; never interpolate user input into SQL.
 - Validate uploaded size, extension, MIME type, and image contents.
 - Keep secrets in environment variables; never commit `.env`.
-- Use transactions and row locks for balance-changing operations.
+- Use transactions and row locks for balance changes and concurrent rate-limit decisions.
 - Add normal, failure, unauthenticated, and forbidden tests with each feature.
 - Do not force-push, rewrite shared history, commit credentials, or hard-delete audit/ledger records.
 

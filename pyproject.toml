@@ -14,6 +14,7 @@ ignore = ["S101"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/tests/*.py" = ["S105", "S106"]
+"config/asgi.py" = ["E402"]
 
 [tool.bandit]
 exclude_dirs = ["tests", "migrations"]

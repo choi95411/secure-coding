@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ conversation }} · Tiny Market{% endblock %}
+{% block content %}
+<h1>{{ conversation }}</h1>
+<div id="messages" class="border rounded bg-white p-3 mb-3" style="height: 420px; overflow: auto;" aria-live="polite">
+  {% for item in page.object_list reversed %}
+    <p><strong>{{ item.sender.profile.display_name }}:</strong> {{ item.content }}</p>
+  {% empty %}
+    <p id="empty-message" class="text-muted">메시지가 없습니다.</p>
+  {% endfor %}
+</div>
+{% if page.has_previous or page.has_next %}
+<nav aria-label="이전 메시지 페이지" class="mb-3">
+  {% if page.has_previous %}<a class="btn btn-sm btn-outline-secondary" href="?page={{ page.previous_page_number }}">더 오래된 메시지</a>{% endif %}
+  {% if page.has_next %}<a class="btn btn-sm btn-outline-secondary" href="?page={{ page.next_page_number }}">더 최근 메시지</a>{% endif %}
+</nav>
+{% endif %}
+<form id="chat-form" class="input-group">
+  <label class="visually-hidden" for="chat-input">메시지</label>
+  <input id="chat-input" class="form-control" maxlength="1000" required autocomplete="off">
+  <button class="btn btn-primary">전송</button>
+</form>
+<p id="chat-error" class="text-danger" role="alert"></p>
+{{ conversation.pk|json_script:"conversation-id" }}
+<script>
+const conversationId = JSON.parse(document.getElementById('conversation-id').textContent);
+const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
+const socket = new WebSocket(`${scheme}://${location.host}/ws/chat/${conversationId}/`);
+const form = document.getElementById('chat-form');
+const input = document.getElementById('chat-input');
+const box = document.getElementById('messages');
+const error = document.getElementById('chat-error');
+socket.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  if (data.error) { error.textContent = data.error; return; }
+  document.getElementById('empty-message')?.remove();
+  const paragraph = document.createElement('p');
+  const sender = document.createElement('strong');
+  sender.textContent = `${data.sender}: `;
+  paragraph.append(sender, document.createTextNode(data.message));
+  box.appendChild(paragraph);
+  box.scrollTop = box.scrollHeight;
+};
+socket.onclose = () => { error.textContent = '채팅 연결이 종료되었습니다.'; };
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  error.textContent = '';
+  if (socket.readyState !== WebSocket.OPEN) { error.textContent = '채팅 서버에 연결되지 않았습니다.'; return; }
+  socket.send(JSON.stringify({message: input.value}));
+  input.value = '';
+});
+</script>
+{% endblock %}

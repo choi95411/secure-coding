@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}채팅 · Tiny Market{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="mb-0">채팅</h1>
+  <a class="btn btn-primary" href="{% url 'chat:global' %}">전체 채팅 입장</a>
+</div>
+<h2 class="h4">1대1 대화</h2>
+<div class="list-group">
+  {% for item in conversations %}
+    <a class="list-group-item list-group-item-action" href="{% url 'chat:detail' item.pk %}">
+      {{ item }} <span class="text-muted">· {{ item.updated_at }}</span>
+    </a>
+  {% empty %}
+    <p class="text-muted">1대1 대화가 없습니다. 사용자 프로필에서 시작할 수 있습니다.</p>
+  {% endfor %}
+</div>
+{% endblock %}
