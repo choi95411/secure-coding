@@ -56,4 +56,4 @@ RUN_REDIS_TESTS=1 .venv/bin/pytest chat/tests/test_redis_integration.py
 
 ## 알려진 제한사항
 
-현재 교육용 플랫폼이며 외부 결제·실물 화폐·추천 시스템은 지원하지 않습니다. Redis 실통합 및 Playwright 실제 브라우저 E2E는 로컬 Docker/브라우저 런타임 복구 후 재검증해야 합니다. GitHub Actions, 공개 저장소 전환, 화면 예시와 최종 보고서는 작업 4에서 마감합니다.
+현재 교육용 플랫폼이며 외부 결제·실물 화폐·추천 시스템은 지원하지 않습니다. Redis 채널 계층은 WSL 로컬 Redis로 통합 검증했습니다. Playwright 실제 브라우저 E2E는 브라우저 런타임 복구 후 재검증해야 합니다. GitHub Actions, 공개 저장소 전환, 화면 예시와 최종 보고서는 작업 4에서 마감합니다.

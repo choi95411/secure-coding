@@ -21,4 +21,4 @@
 - username/IP 원문을 저장하지 않는 HMAC 로그인 실패 제한과 잠금·성공 초기화를 추가했다.
 - 최초 대화·로그인 제한 행의 동시 생성 고유 키 충돌을 savepoint와 잠금 재조회로 보강했다.
 - 전체 회귀 56 passed, 2 skipped와 migration/Ruff/format/Bandit 통과를 확인했다.
-- Docker Desktop 엔진이 기동 단계에서 멈춰 Redis 실통합 테스트를 실행하지 못했고, 브라우저 런타임 샌드박스 오류로 Playwright 실제 브라우저 E2E를 작업 4로 이관했다.
+- Docker Desktop 엔진은 기동 단계에서 멈췄지만 WSL Redis 8.0.5를 격리 실행해 실제 채널 계층 테스트 `1 passed`를 확인했다. 브라우저 런타임 샌드박스 오류는 재부팅 후에도 반복되어 Playwright 실제 브라우저 E2E를 작업 4로 이관했다.
