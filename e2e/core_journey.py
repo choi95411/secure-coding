@@ -94,7 +94,7 @@ with sync_playwright() as playwright:
     admin.locator("#id_action").select_option("block")
     admin.locator("#id_reason").fill("E2E 검증 악성 상품 차단")
     admin.get_by_role("button", name="적용").click()
-    expect(admin.get_by_role("heading", name="신고 관리")).to_be_visible()
+    expect(admin.get_by_role("heading", name="플랫폼 관리")).to_be_visible()
     admin.screenshot(path=screenshot_dir / "04-moderation.png", full_page=True)
 
     response = bob.goto(product_url)

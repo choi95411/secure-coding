@@ -2,6 +2,7 @@
 set -euo pipefail
 
 log_file="${RUNNER_TEMP:-/tmp}/secure-coding-daphne.log"
+python manage.py collectstatic --noinput
 daphne -b 127.0.0.1 -p 8000 config.asgi:application >"${log_file}" 2>&1 &
 server_pid=$!
 

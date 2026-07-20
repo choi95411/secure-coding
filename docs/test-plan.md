@@ -9,7 +9,7 @@
 ## 최근 결과
 
 - 보고서 전 보안 보강 대상 회귀: `60 passed, 2 skipped`; 관리자 공통화 회귀 수정 후 관련 `49 passed, 1 skipped` (2026-07-20).
-- 최종 SQLite 전체 회귀: `67 passed, 2 skipped`; skip된 PostgreSQL·Redis 외부 통합 2건은 CI에서 실행한다.
+- 최종 SQLite 전체 회귀: `68 passed, 2 skipped`; skip된 PostgreSQL·Redis 외부 통합 2건은 CI에서 실행한다.
 - Ruff lint/format, migration drift, Bandit: 통과.
 - PostgreSQL 송금 동시성: 실제 `postgres:17-alpine` 환경에서 `1 passed`.
 - Redis 채널 계층 테스트: WSL Redis 8.0.5를 56379 포트에서 영속화 없이 격리 실행해 `1 passed`.
@@ -29,3 +29,4 @@
 - 상품 가격, 송금·조정 1회 금액, 지갑 잔액 상한
 - CSP에서 인라인 스크립트 금지, Permissions-Policy, 외부 정적 채팅 스크립트
 - 사용자 친화적 403·404와 내부 Traceback 비노출
+- `DEBUG=false` 환경에서 `collectstatic` 후 `chat/chat.js` 발견·Docker 이미지 포함을 검증한다.

@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.staticfiles import finders
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -24,6 +25,9 @@ class BrowserSecurityTests(TestCase):
             response.headers["Permissions-Policy"],
             "camera=(), microphone=(), geolocation=(), payment=()",
         )
+
+    def test_chat_script_is_discoverable_for_collectstatic(self):
+        self.assertIsNotNone(finders.find("chat/chat.js"))
 
     def test_chat_uses_external_script_compatible_with_csp(self):
         alice = User.objects.create_user("csp-alice", password="Test-Password-123!")

@@ -35,3 +35,4 @@
 - `SEC-009` 동일 대상 중복 신고는 막았지만 서로 다른 대상을 연속 신고하는 도배가 가능했다. 신고자 행 잠금, 활성 계정 재검증, 시간당 사용자별 신고 상한을 추가했다. CWE-770.
 - `SEC-010` 기본 보안 헤더에 CSP와 Permissions-Policy가 없고 채팅 템플릿에 인라인 JavaScript가 있었다. 스크립트를 정적 파일로 분리하고 엄격한 `script-src 'self'`, `object-src 'none'`, `frame-ancestors 'none'`, Permissions-Policy와 Bootstrap SRI를 적용했다. CWE-693.
 - `SEC-011` 상품 가격과 포인트 거래가 DB 정수 범위 외 별도 업무 상한을 갖지 않았다. 상품 DB 제약·폼 검증, 송금/조정 1회 한도와 지갑 최대 잔액 검사를 서비스 계층에 추가하고 초과 요청 회귀 테스트를 통과했다. CWE-20.
+- `SEC-012` CSP 적용 후 채팅 JavaScript를 정적 파일로 분리했지만 `DEBUG=false` E2E/Docker 시작 절차가 `collectstatic`을 실행하지 않아 실시간 채팅 버튼이 비활성화됐다. CI 브라우저 테스트에서 발견했으며, 이미지 빌드·Compose·E2E 시작에 정적 파일 수집을 추가하고 `finders`, Docker 이미지 파일 존재, 전체 회귀로 검증했다. CWE-16.
