@@ -1,2 +1,2 @@
 {% extends "base.html" %}{% block title %}회원가입{% endblock %}
-{% block content %}<div class="card mx-auto p-4" style="max-width:34rem"><h1 class="h3">회원가입</h1><form method="post" novalidate>{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">가입</button></form></div>{% endblock %}
+{% block content %}<div class="card mx-auto p-4 signup-card"><h1 class="h3">회원가입</h1><form method="post" novalidate>{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">가입</button></form></div>{% endblock %}

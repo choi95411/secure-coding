@@ -3,7 +3,7 @@
 {% block title %}{{ conversation }} · Tiny Market{% endblock %}
 {% block content %}
 <h1>{{ conversation }}</h1>
-<div id="messages" class="border rounded bg-white p-3 mb-3 overflow-auto" style="height: 420px;" aria-live="polite">
+<div id="messages" class="border rounded bg-white p-3 mb-3 overflow-auto chat-messages" aria-live="polite">
   {% for item in page.object_list reversed %}
     <p><strong>{{ item.sender.profile.display_name }}:</strong> {{ item.content }}</p>
   {% empty %}

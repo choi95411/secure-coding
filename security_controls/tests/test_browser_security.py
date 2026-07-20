@@ -18,16 +18,23 @@ class BrowserSecurityTests(TestCase):
             for directive in policy.split(";")
             if directive.strip().startswith("script-src")
         )
+        style_policy = next(
+            directive
+            for directive in policy.split(";")
+            if directive.strip().startswith("style-src")
+        )
         self.assertIn("object-src 'none'", policy)
         self.assertIn("frame-ancestors 'none'", policy)
         self.assertNotIn("'unsafe-inline'", script_policy)
+        self.assertNotIn("'unsafe-inline'", style_policy)
         self.assertEqual(
             response.headers["Permissions-Policy"],
             "camera=(), microphone=(), geolocation=(), payment=()",
         )
 
-    def test_chat_script_is_discoverable_for_collectstatic(self):
+    def test_static_security_assets_are_discoverable_for_collectstatic(self):
         self.assertIsNotNone(finders.find("chat/chat.js"))
+        self.assertIsNotNone(finders.find("css/app.css"))
 
     def test_chat_uses_external_script_compatible_with_csp(self):
         alice = User.objects.create_user("csp-alice", password="Test-Password-123!")

@@ -1,0 +1,16 @@
+.auth-card {
+  max-width: 30rem;
+}
+
+.signup-card {
+  max-width: 34rem;
+}
+
+.product-card-image {
+  height: 220px;
+  object-fit: cover;
+}
+
+.chat-messages {
+  height: 420px;
+}

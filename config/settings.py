@@ -135,7 +135,7 @@ CHANNEL_LAYERS = {
 CONTENT_SECURITY_POLICY = (
     "default-src 'self'; "
     "script-src 'self'; "
-    "style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; "
+    "style-src 'self' https://cdn.jsdelivr.net; "
     "img-src 'self' data:; "
     "connect-src 'self' ws: wss:; "
     "object-src 'none'; "

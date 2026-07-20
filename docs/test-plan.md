@@ -29,4 +29,4 @@
 - 상품 가격, 송금·조정 1회 금액, 지갑 잔액 상한
 - CSP에서 인라인 스크립트 금지, Permissions-Policy, 외부 정적 채팅 스크립트
 - 사용자 친화적 403·404와 내부 Traceback 비노출
-- `DEBUG=false` 환경에서 `collectstatic` 후 `chat/chat.js` 발견·Docker 이미지 포함을 검증한다.
+- `DEBUG=false` 환경에서 `collectstatic` 후 `chat/chat.js` 발견·Docker 이미지 포함을 검증한다.- CSP의 `script-src`와 `style-src` 모두 `unsafe-inline`이 없고 모든 템플릿에 인라인 `style` 속성이 없음을 검증한다.
