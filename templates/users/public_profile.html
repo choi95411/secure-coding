@@ -1,2 +1,2 @@
-{% extends "base.html" %}{% block title %}사용자 프로필{% endblock %}
-{% block content %}<h1>{{ profile_user.profile.display_name }}</h1><p class="text-muted">@{{ profile_user.username }}</p><p>{{ profile_user.profile.bio|default:"소개가 없습니다." }}</p>{% endblock %}
+{% extends "base.html" %}{% block title %}사용자 프로필{% if user.is_authenticated and user != profile_user %}<a class="btn btn-outline-danger" href="{% url 'moderation:report_user' profile_user.username %}">사용자 신고</a>{% endif %}{% endblock %}
+{% block content %}<h1>{{ profile_user.profile.display_name }}</h1><p class="text-muted">@{{ profile_user.username }}</p><p>{{ profile_user.profile.bio|default:"소개가 없습니다." }}</p>{% if user.is_authenticated and user != profile_user %}<a class="btn btn-outline-danger" href="{% url 'moderation:report_user' profile_user.username %}">사용자 신고</a>{% endif %}{% endblock %}

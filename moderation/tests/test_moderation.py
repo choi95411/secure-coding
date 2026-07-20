@@ -1,0 +1,87 @@
+from django.contrib.auth import get_user_model
+from django.core.exceptions import PermissionDenied, ValidationError
+from django.test import TestCase
+from django.urls import reverse
+
+from moderation.models import AdminAuditLog, ModerationAction, Report
+from moderation.services import file_report, moderate_target
+from products.models import Product
+
+User = get_user_model()
+
+
+class ReportTests(TestCase):
+    def setUp(self):
+        self.seller = User.objects.create_user("seller", password="Test-Password-123!")
+        self.product = Product.objects.create(
+            seller=self.seller, title="상품", description="설명", price=100
+        )
+        self.reporters = [
+            User.objects.create_user(f"reporter{i}", password="Test-Password-123!")
+            for i in range(3)
+        ]
+
+    def test_duplicate_and_self_reports_are_rejected(self):
+        file_report(reporter=self.reporters[0], target=self.product, reason="충분한 신고 사유")
+        with self.assertRaises(ValidationError):
+            file_report(reporter=self.reporters[0], target=self.product, reason="중복 신고 사유")
+        with self.assertRaises(ValidationError):
+            file_report(reporter=self.seller, target=self.product, reason="자기 상품 신고")
+
+    def test_threshold_blocks_product_and_dormants_user(self):
+        for reporter in self.reporters:
+            file_report(reporter=reporter, target=self.product, reason="악성 상품 신고")
+        self.product.refresh_from_db()
+        self.assertEqual(self.product.status, Product.Status.BLOCKED)
+        self.assertTrue(ModerationAction.objects.filter(action="auto_block_product").exists())
+        target = User.objects.create_user("target", password="Test-Password-123!")
+        for reporter in self.reporters:
+            file_report(reporter=reporter, target=target, reason="악성 사용자 신고")
+        target.refresh_from_db()
+        self.assertEqual(target.status, User.Status.DORMANT)
+
+    def test_report_view_requires_login_and_validates_reason(self):
+        url = reverse("moderation:report_product", args=[self.product.pk])
+        self.assertEqual(self.client.get(url).status_code, 302)
+        self.client.force_login(self.reporters[0])
+        self.assertEqual(self.client.post(url, {"reason": "짧음"}).status_code, 200)
+        self.assertFalse(Report.objects.exists())
+
+
+class AdminModerationTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_user("admin", password="Test-Password-123!", is_staff=True)
+        self.user = User.objects.create_user("user", password="Test-Password-123!")
+        self.product = Product.objects.create(
+            seller=self.user, title="상품", description="설명", price=100
+        )
+
+    def test_nonstaff_cannot_access_or_call_service(self):
+        self.client.force_login(self.user)
+        self.assertEqual(self.client.get(reverse("moderation:dashboard")).status_code, 403)
+        with self.assertRaises(PermissionDenied):
+            moderate_target(
+                actor=self.user, target=self.product, action="block", reason="권한 없는 제재"
+            )
+
+    def test_admin_action_records_before_after_and_audit(self):
+        moderate_target(
+            actor=self.admin, target=self.product, action="block", reason="악성 상품 확인"
+        )
+        self.product.refresh_from_db()
+        self.assertEqual(self.product.status, Product.Status.BLOCKED)
+        action = ModerationAction.objects.get(actor=self.admin)
+        audit = AdminAuditLog.objects.get(actor=self.admin)
+        self.assertEqual(action.before, {"status": Product.Status.AVAILABLE})
+        self.assertEqual(action.after, {"status": Product.Status.BLOCKED})
+        self.assertEqual(audit.reason, "악성 상품 확인")
+
+    def test_admin_can_block_and_restore_user(self):
+        moderate_target(actor=self.admin, target=self.user, action="block", reason="반복 악성 행위")
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.status, User.Status.BLOCKED)
+        moderate_target(
+            actor=self.admin, target=self.user, action="restore", reason="이의 제기 승인"
+        )
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.status, User.Status.ACTIVE)

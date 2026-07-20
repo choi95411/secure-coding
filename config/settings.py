@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "products.apps.ProductsConfig",
     "wallets.apps.WalletsConfig",
+    "moderation.apps.ModerationConfig",
 ]
 
 MIDDLEWARE = [
@@ -111,6 +112,7 @@ SESSION_COOKIE_SECURE = not DEBUG and SECURE_SSL_REDIRECT
 CSRF_COOKIE_SECURE = not DEBUG and SECURE_SSL_REDIRECT
 
 INITIAL_WALLET_POINTS = int(os.getenv("INITIAL_WALLET_POINTS", "10000"))
+REPORT_BLOCK_THRESHOLD = int(os.getenv("REPORT_BLOCK_THRESHOLD", "3"))
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
 CHANNEL_LAYERS = {
     "default": {

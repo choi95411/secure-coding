@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<h1>관리 작업</h1><p>대상: {{ target }}</p><form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-danger">적용</button></form>{% endblock %}
