@@ -44,4 +44,4 @@
 - CSP, Permissions-Policy, Bootstrap SRI를 적용하고 채팅 인라인 스크립트를 정적 파일로 분리했으며 403·404·500 페이지를 추가했다.
 - 보강 대상 테스트 `60 passed, 2 skipped`, 회귀 수정 후 관련 테스트 `49 passed, 1 skipped`, Ruff·format·migration drift·Django check·Bandit을 통과했다. 전체 검사에서 읽기 전용 공통화가 감사되는 메시지 상태 변경까지 막는 회귀 1건을 발견해 예외 흐름을 복원하고 관련 테스트를 통과했다.- 최종 로컬 전체 회귀 `67 passed, 2 skipped`와 Ruff·format·Bandit·migration drift·pip check·pip-audit·deploy check·비밀 이력·Compose 구문 검사를 통과했다.
 - Docker Desktop 29.2.1을 기동해 이미지를 실제 빌드했으며 `appuser` 비루트 실행과 컨테이너 내부 Django check 통과를 확인했다.- 첫 보안 강화 CI 29722926398은 코드·보안·Docker·PostgreSQL·Redis 테스트를 모두 통과했으나, `DEBUG=false`에서 채팅 정적 파일이 수집되지 않아 Playwright 전송 버튼 단언에서 실패했다.
-- Dockerfile·Compose·E2E 시작 절차에 `collectstatic`을 추가하고 관리자 화면 제목 단언을 갱신했다. 정적 파일 발견 테스트, 새 Docker 이미지의 `/app/staticfiles/chat/chat.js`, 전체 `68 passed, 2 skipped`를 확인했다.
+- Dockerfile·Compose·E2E 시작 절차에 `collectstatic`을 추가하고 관리자 화면 제목 단언을 갱신했다. 정적 파일 발견 테스트, 새 Docker 이미지의 `/app/staticfiles/chat/chat.js`, 전체 `68 passed, 2 skipped`를 확인했다.- 수정 CI 29723526957에서 migration, Ruff, Bandit, pip-audit, 비밀 이력, Docker, deploy check, PostgreSQL·Redis 전체 테스트, Playwright 핵심 흐름과 증빙 업로드가 모두 통과했다.
