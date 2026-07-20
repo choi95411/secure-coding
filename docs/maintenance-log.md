@@ -33,3 +33,4 @@
 - 저장소를 public으로 전환하고 main을 push했다. 첫 CI는 E2E 관리자 스크립트 import 경로 문제로 실패했으며 모듈 실행으로 수정했다.
 - 수정 CI에서 PostgreSQL·Redis 전체 테스트, Docker 빌드와 Playwright 핵심 흐름이 모두 통과했다. E2E 화면 4장을 내려받아 한글·레이아웃·민감정보를 시각 확인하고 README에 반영했다.
 - GitHub 공식 최신 릴리스에 맞춰 checkout, setup-python, upload-artifact를 v7로 갱신했다.
+- Actions v7 최종 main 실행 29720091057에서 모든 단계와 E2E 증빙 업로드가 통과했다. public 저장소 설명·주제를 설정했고 Dependabot 업데이트 PR은 검토 전 자동 병합하지 않았다.
