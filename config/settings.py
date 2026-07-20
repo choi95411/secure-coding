@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "products.apps.ProductsConfig",
     "wallets.apps.WalletsConfig",
     "moderation.apps.ModerationConfig",
+    "adjustments.apps.AdjustmentsConfig",
 ]
 
 MIDDLEWARE = [

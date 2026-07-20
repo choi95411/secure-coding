@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -72,6 +73,11 @@ class ModerationAction(models.Model):
         return f"{self.action}: {self.target_type} {self.target_id}"
 
 
+class AdminAuditLogQuerySet(models.QuerySet):
+    def delete(self):
+        raise ValidationError("관리자 감사 로그는 삭제할 수 없습니다.")
+
+
 class AdminAuditLog(models.Model):
     actor = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="admin_audit_logs"
@@ -84,8 +90,18 @@ class AdminAuditLog(models.Model):
     after = models.JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    objects = AdminAuditLogQuerySet.as_manager()
+
     class Meta:
         ordering = ("-created_at",)
 
     def __str__(self):
         return f"{self.actor}: {self.action}"
+
+    def save(self, *args, **kwargs):
+        if self.pk and AdminAuditLog.objects.filter(pk=self.pk).exists():
+            raise ValidationError("관리자 감사 로그는 수정할 수 없습니다.")
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("관리자 감사 로그는 삭제할 수 없습니다.")

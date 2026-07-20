@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<h1>지갑 조정</h1><p>잔액을 직접 덮어쓰지 않고 원장과 감사 로그를 함께 생성합니다.</p><form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-danger">조정 실행</button></form>{% endblock %}

@@ -173,7 +173,7 @@ class PostgreSQLConcurrentTransferTests(TransactionTestCase):
                 idempotency_key=uuid.uuid4(),
             )
             statuses.append(result.transfer.status)
-            close_old_connections()
+            connection.close()
 
         threads = [threading.Thread(target=run, args=(recipient.pk,)) for recipient in recipients]
         for thread in threads:

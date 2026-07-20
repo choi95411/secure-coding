@@ -14,6 +14,12 @@ def file_report(*, reporter, target, reason):
     reason = reason.strip()
     if len(reason) < 5:
         raise ValidationError("신고 사유는 5자 이상이어야 합니다.")
+    if isinstance(target, User):
+        target = User.objects.select_for_update().get(pk=target.pk)
+    elif isinstance(target, Product):
+        target = Product.objects.select_for_update().get(pk=target.pk)
+    else:
+        raise ValidationError("지원하지 않는 신고 대상입니다.")
     fields = {"target_user": target} if isinstance(target, User) else {"target_product": target}
     if isinstance(target, User) and reporter.pk == target.pk:
         raise ValidationError("자기 자신을 신고할 수 없습니다.")

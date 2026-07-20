@@ -16,7 +16,7 @@
 - Test: `.venv/bin/pytest`
 - Lint: `.venv/bin/ruff check .`
 - Format check: `.venv/bin/ruff format --check .`
-- Security: `.venv/bin/bandit -c pyproject.toml -r config users products wallets moderation`
+- Security: `.venv/bin/bandit -c pyproject.toml -r config users products wallets moderation adjustments`
 
 ## Rules
 
