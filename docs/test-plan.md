@@ -19,7 +19,7 @@
 
 ## GitHub Actions 검증
 
-[보안 보강 최종 main CI 29723526957](https://github.com/choi95411/secure-coding/actions/runs/29723526957)에서 Actions v7 전 단계가 통과했다. Ubuntu, Python 3.13, PostgreSQL 17, Redis 7.4 서비스에서 migration drift, Ruff, Bandit, pip-audit, Django deploy check, 전체 pytest(외부 통합 포함), Docker Compose 구성·이미지 빌드를 수행한다. 이후 Daphne를 실행하고 Playwright Chromium으로 가입 → 상품 등록·검색 → 1대1 WebSocket 채팅 → 송금·양측 잔액 → 신고 → 관리자 제재 → 일반 사용자 관리자 403을 검증하며 네 화면과 서버 로그를 `e2e-evidence` 아티팩트로 보존한다.
+[보안 보강 최종 main CI 29724174781](https://github.com/choi95411/secure-coding/actions/runs/29724174781)에서 Actions v7 전 단계가 통과했다. Ubuntu, Python 3.13, PostgreSQL 17, Redis 7.4 서비스에서 migration drift, Ruff, Bandit, pip-audit, Django deploy check, 전체 pytest(외부 통합 포함), Docker Compose 구성·이미지 빌드를 수행한다. 이후 Daphne를 실행하고 Playwright Chromium으로 가입 → 상품 등록·검색 → 1대1 WebSocket 채팅 → 송금·양측 잔액 → 신고 → 관리자 제재 → 일반 사용자 관리자 403을 검증하며 네 화면과 서버 로그를 `e2e-evidence` 아티팩트로 보존한다.
 
 ## 보고서 전 보안 회귀 추가
 
