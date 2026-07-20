@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import IntegrityError, transaction
@@ -15,16 +17,30 @@ def file_report(*, reporter, target, reason):
     if len(reason) < 5:
         raise ValidationError("신고 사유는 5자 이상이어야 합니다.")
     if isinstance(target, User):
-        target = User.objects.select_for_update().get(pk=target.pk)
+        if reporter.pk == target.pk:
+            raise ValidationError("자기 자신을 신고할 수 없습니다.")
+        locked_users = {
+            user.pk: user
+            for user in User.objects.select_for_update()
+            .filter(pk__in=(reporter.pk, target.pk))
+            .order_by("pk")
+        }
+        reporter = locked_users[reporter.pk]
+        target = locked_users[target.pk]
     elif isinstance(target, Product):
-        target = Product.objects.select_for_update().get(pk=target.pk)
+        reporter = User.objects.select_for_update().get(pk=reporter.pk)
+        target = Product.objects.select_for_update().select_related("seller").get(pk=target.pk)
+        if reporter.pk == target.seller_id:
+            raise ValidationError("자신의 상품을 신고할 수 없습니다.")
     else:
         raise ValidationError("지원하지 않는 신고 대상입니다.")
+    if not reporter.can_use_platform:
+        raise PermissionDenied("활성 사용자만 신고할 수 있습니다.")
+    hourly_limit = int(getattr(settings, "REPORTS_PER_HOUR", 10))
+    since = timezone.now() - timedelta(hours=1)
+    if Report.objects.filter(reporter=reporter, created_at__gte=since).count() >= hourly_limit:
+        raise ValidationError("시간당 신고 가능 횟수를 초과했습니다.")
     fields = {"target_user": target} if isinstance(target, User) else {"target_product": target}
-    if isinstance(target, User) and reporter.pk == target.pk:
-        raise ValidationError("자기 자신을 신고할 수 없습니다.")
-    if isinstance(target, Product) and reporter.pk == target.seller_id:
-        raise ValidationError("자신의 상품을 신고할 수 없습니다.")
     try:
         report = Report.objects.create(reporter=reporter, reason=reason, **fields)
     except IntegrityError as exc:

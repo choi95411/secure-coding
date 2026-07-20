@@ -11,6 +11,9 @@ class WalletAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
+    def has_change_permission(self, request, obj=None):
+        return False
+
     def has_delete_permission(self, request, obj=None):
         return False
 
@@ -23,6 +26,9 @@ class TransferAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
+    def has_change_permission(self, request, obj=None):
+        return False
+
     def has_delete_permission(self, request, obj=None):
         return False
 
@@ -33,6 +39,9 @@ class LedgerEntryAdmin(admin.ModelAdmin):
     readonly_fields = tuple(field.name for field in LedgerEntry._meta.fields)
 
     def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
         return False
 
     def has_delete_permission(self, request, obj=None):

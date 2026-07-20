@@ -59,6 +59,12 @@ class Transfer(models.Model):
 
 
 class LedgerEntryQuerySet(models.QuerySet):
+    def update(self, **kwargs):
+        raise ValidationError("원장 항목은 수정할 수 없습니다.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("원장 항목은 수정할 수 없습니다.")
+
     def delete(self):
         raise ValidationError("원장 항목은 삭제할 수 없습니다.")
 

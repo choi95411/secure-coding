@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from moderation.models import AdminAuditLog, ModerationAction, Report
@@ -46,6 +46,23 @@ class ReportTests(TestCase):
         self.client.force_login(self.reporters[0])
         self.assertEqual(self.client.post(url, {"reason": "짧음"}).status_code, 200)
         self.assertFalse(Report.objects.exists())
+
+    @override_settings(REPORTS_PER_HOUR=2, REPORT_BLOCK_THRESHOLD=99)
+    def test_hourly_report_limit_and_inactive_reporter(self):
+        targets = [
+            Product.objects.create(
+                seller=self.seller, title=f"상품 {index}", description="설명", price=100
+            )
+            for index in range(3)
+        ]
+        for target in targets[:2]:
+            file_report(reporter=self.reporters[0], target=target, reason="정당한 신고 사유")
+        with self.assertRaises(ValidationError):
+            file_report(reporter=self.reporters[0], target=targets[2], reason="신고 도배 제한 확인")
+        self.reporters[1].status = User.Status.BLOCKED
+        self.reporters[1].save(update_fields=("status",))
+        with self.assertRaises(PermissionDenied):
+            file_report(reporter=self.reporters[1], target=targets[2], reason="차단 사용자 신고")
 
 
 class AdminModerationTests(TestCase):
@@ -98,3 +115,41 @@ class AdminModerationTests(TestCase):
         )
         self.user.refresh_from_db()
         self.assertEqual(self.user.status, User.Status.ACTIVE)
+
+    def test_dashboard_lists_users_and_products_for_management(self):
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("moderation:dashboard"))
+        self.assertContains(response, reverse("moderation:moderate_user", args=[self.user.pk]))
+        self.assertContains(
+            response, reverse("moderation:moderate_product", args=[self.product.pk])
+        )
+
+    def test_django_admin_cannot_bypass_audited_management(self):
+        superuser = User.objects.create_superuser(
+            "root-admin", password="Test-Password-123!", email="root@example.com"
+        )
+        reporter = User.objects.create_user("admin-reporter", password="Test-Password-123!")
+        report = file_report(reporter=reporter, target=self.product, reason="관리자 우회 차단 검증")
+        self.client.force_login(superuser)
+        user_response = self.client.post(
+            reverse("admin:users_user_change", args=[self.user.pk]), {"status": "blocked"}
+        )
+        product_response = self.client.post(
+            reverse("admin:products_product_change", args=[self.product.pk]),
+            {"status": "blocked"},
+        )
+        report_response = self.client.post(
+            reverse("admin:moderation_report_change", args=[report.pk]),
+            {"status": "resolved"},
+        )
+        self.assertEqual(
+            (user_response.status_code, product_response.status_code, report_response.status_code),
+            (403, 403, 403),
+        )
+        self.user.refresh_from_db()
+        self.product.refresh_from_db()
+        report.refresh_from_db()
+        self.assertEqual(self.user.status, User.Status.ACTIVE)
+        self.assertEqual(self.product.status, Product.Status.AVAILABLE)
+        self.assertEqual(report.status, Report.Status.PENDING)
+        self.assertFalse(AdminAuditLog.objects.exists())

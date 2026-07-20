@@ -34,3 +34,13 @@
 - 수정 CI에서 PostgreSQL·Redis 전체 테스트, Docker 빌드와 Playwright 핵심 흐름이 모두 통과했다. E2E 화면 4장을 내려받아 한글·레이아웃·민감정보를 시각 확인하고 README에 반영했다.
 - GitHub 공식 최신 릴리스에 맞춰 checkout, setup-python, upload-artifact를 v7로 갱신했다.
 - Actions v7 최종 main 실행 29720091057에서 모든 단계와 E2E 증빙 업로드가 통과했다. public 저장소 설명·주제를 설정했고 Dependabot 업데이트 PR은 검토 전 자동 병합하지 않았다.
+## 2026-07-20 보고서 전 보안·완성도 감사
+
+- Django Admin 직접 상태 변경이 감사 서비스를 우회할 수 있음을 확인해 사용자·프로필·상품·신고·제재·원장·조정·로그 관리 화면을 조회 전용으로 제한했다. 메시지 상태 변경만 사유와 불변 감사 로그를 남기는 기존 통제 흐름으로 허용한다.
+- 전용 플랫폼 관리 대시보드에 신고뿐 아니라 사용자·상품 전체 목록과 제재 진입점을 추가했다.
+- 원장·조정 거래·제재 이력·관리자 감사 로그의 `QuerySet.update`, `bulk_update`, `delete` 우회를 모델 계층에서 차단했다.
+- 서로 다른 대상을 이용한 신고 도배를 막기 위해 신고자 잠금·활성 상태 재검증·시간당 상한을 추가했다.
+- 상품 가격, 1회 송금·조정 금액, 수신/조정 후 지갑 잔액의 업무 상한과 DB 가격 제약을 추가했다.
+- CSP, Permissions-Policy, Bootstrap SRI를 적용하고 채팅 인라인 스크립트를 정적 파일로 분리했으며 403·404·500 페이지를 추가했다.
+- 보강 대상 테스트 `60 passed, 2 skipped`, 회귀 수정 후 관련 테스트 `49 passed, 1 skipped`, Ruff·format·migration drift·Django check·Bandit을 통과했다. 전체 검사에서 읽기 전용 공통화가 감사되는 메시지 상태 변경까지 막는 회귀 1건을 발견해 예외 흐름을 복원하고 관련 테스트를 통과했다.- 최종 로컬 전체 회귀 `67 passed, 2 skipped`와 Ruff·format·Bandit·migration drift·pip check·pip-audit·deploy check·비밀 이력·Compose 구문 검사를 통과했다.
+- Docker Desktop 29.2.1을 기동해 이미지를 실제 빌드했으며 `appuser` 비루트 실행과 컨테이너 내부 Django check 통과를 확인했다.

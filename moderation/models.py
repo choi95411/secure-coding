@@ -54,6 +54,17 @@ class Report(models.Model):
         return f"report {self.pk} by {self.reporter}"
 
 
+class ImmutableRecordQuerySet(models.QuerySet):
+    def update(self, **kwargs):
+        raise ValidationError("감사 기록은 수정할 수 없습니다.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("감사 기록은 수정할 수 없습니다.")
+
+    def delete(self):
+        raise ValidationError("감사 기록은 삭제할 수 없습니다.")
+
+
 class ModerationAction(models.Model):
     actor = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -69,11 +80,27 @@ class ModerationAction(models.Model):
     after = models.JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    objects = ImmutableRecordQuerySet.as_manager()
+
     def __str__(self):
         return f"{self.action}: {self.target_type} {self.target_id}"
 
+    def save(self, *args, **kwargs):
+        if self.pk and ModerationAction.objects.filter(pk=self.pk).exists():
+            raise ValidationError("제재 이력은 수정할 수 없습니다.")
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("제재 이력은 삭제할 수 없습니다.")
+
 
 class AdminAuditLogQuerySet(models.QuerySet):
+    def update(self, **kwargs):
+        raise ValidationError("관리자 감사 로그는 수정할 수 없습니다.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("관리자 감사 로그는 수정할 수 없습니다.")
+
     def delete(self):
         raise ValidationError("관리자 감사 로그는 삭제할 수 없습니다.")
 

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 
@@ -15,6 +16,8 @@ def adjust_wallet(*, actor, user, amount, reason):
     reason = reason.strip()
     if amount == 0:
         raise ValidationError("조정 금액은 0일 수 없습니다.")
+    if abs(amount) > settings.MAX_POINT_TRANSACTION:
+        raise ValidationError("1회 조정 한도를 초과했습니다.")
     if len(reason) < 5:
         raise ValidationError("조정 사유는 5자 이상이어야 합니다.")
 
@@ -23,6 +26,8 @@ def adjust_wallet(*, actor, user, amount, reason):
     after_balance = before_balance + amount
     if after_balance < 0:
         raise ValidationError("조정 후 잔액은 음수가 될 수 없습니다.")
+    if after_balance > settings.MAX_WALLET_BALANCE:
+        raise ValidationError("조정 후 지갑 잔액 한도를 초과할 수 없습니다.")
 
     wallet.balance = after_balance
     wallet.save(update_fields=("balance", "updated_at"))

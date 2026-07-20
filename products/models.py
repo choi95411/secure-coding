@@ -2,10 +2,12 @@ import uuid
 from pathlib import Path
 
 from django.conf import settings
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from .validators import validate_product_image
+
+MAX_PRODUCT_PRICE = 1_000_000_000
 
 
 class ProductQuerySet(models.QuerySet):
@@ -33,7 +35,9 @@ class Product(models.Model):
     )
     title = models.CharField(max_length=120, db_index=True)
     description = models.TextField(max_length=3000)
-    price = models.PositiveBigIntegerField(validators=[MinValueValidator(0)])
+    price = models.PositiveBigIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(MAX_PRODUCT_PRICE)]
+    )
     status = models.CharField(
         max_length=16, choices=Status.choices, default=Status.AVAILABLE, db_index=True
     )
@@ -51,7 +55,10 @@ class Product(models.Model):
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(price__gte=0), name="product_price_nonnegative"
-            )
+            ),
+            models.CheckConstraint(
+                condition=models.Q(price__lte=MAX_PRODUCT_PRICE), name="product_price_maximum"
+            ),
         ]
         indexes = [
             models.Index(

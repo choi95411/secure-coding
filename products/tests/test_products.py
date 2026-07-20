@@ -50,6 +50,21 @@ class ProductCrudTests(TestCase):
         self.assertEqual(product.seller, self.alice)
         self.assertEqual(product.images.count(), 1)
 
+    def test_price_above_platform_limit_is_rejected(self):
+        self.client.force_login(self.alice)
+        response = self.client.post(
+            reverse("products:create"),
+            {
+                "title": "비정상 고가 상품",
+                "description": "가격 상한 검증",
+                "price": 1_000_000_001,
+                "status": Product.Status.AVAILABLE,
+                "visibility": Product.Visibility.PUBLIC,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Product.objects.filter(title="비정상 고가 상품").exists())
+
     def test_fake_image_is_rejected(self):
         self.client.force_login(self.alice)
         fake = SimpleUploadedFile("attack.png", b"not an image", content_type="image/png")

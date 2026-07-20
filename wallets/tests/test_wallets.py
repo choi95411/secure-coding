@@ -5,7 +5,7 @@ from unittest import mock
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import close_old_connections, connection
-from django.test import TestCase, TransactionTestCase
+from django.test import TestCase, TransactionTestCase, override_settings
 from django.urls import reverse
 
 from wallets.models import LedgerEntry, Transfer
@@ -106,6 +106,24 @@ class WalletServiceTests(TestCase):
             entry.delete()
         with self.assertRaises(ValidationError):
             LedgerEntry.objects.all().delete()
+
+    def test_transfer_amount_and_recipient_balance_are_bounded(self):
+        with self.assertRaises(ValueError):
+            transfer_points(
+                sender=self.alice,
+                recipient=self.bob,
+                amount=1_000_000_001,
+                idempotency_key=uuid.uuid4(),
+            )
+        with override_settings(MAX_WALLET_BALANCE=10_000):
+            result = transfer_points(
+                sender=self.alice,
+                recipient=self.bob,
+                amount=1,
+                idempotency_key=uuid.uuid4(),
+            )
+        self.assertEqual(result.transfer.status, Transfer.Status.FAILED)
+        self.assertEqual(result.transfer.failure_code, "recipient_balance_limit")
 
     def test_exception_rolls_back_transfer_and_balances(self):
         with mock.patch(

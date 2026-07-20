@@ -1,9 +1,9 @@
 # Progress
 
-- 완료: PDF 최소 기능 전체, 인증·상품·검색, 송금·불변 원장·PostgreSQL 동시성, 신고·제재·감사, 전체·1대1 채팅·Redis 통합, 로그인/WebSocket 보안, README, public GitHub, CI/Dependabot/Playwright E2E, 화면 4장, 의존성·Git 이력 비밀 검사
-- 현재 작업: 작업 4 중 보고서를 제외한 모든 항목 완료
-- 남음: 별도 요청 시 최종 보고서 원본·PDF, 분반·개인정보, PDF 시각 검증과 제출 파일명
-- 최근 테스트: 로컬 전체 `57 passed, 2 skipped`; [GitHub Actions v7 최종 실행](https://github.com/choi95411/secure-coding/actions/runs/29720091057) PostgreSQL·Redis·Docker·Playwright 전체 통과; migration/Ruff/format/Bandit/pip-audit/deploy/Compose/비밀 이력 검사 통과
-- 결정: public `choi95411/secure-coding`, GitHub Actions에서 외부 통합과 Playwright 핵심 흐름 및 화면 증빙 실행, Dependabot 주간 점검
-- 알려진 문제: Docker Desktop 엔진은 로컬에서 기동 정지했으나 Compose·Docker build는 Actions에서 통과; 운영 배포와 최종 보고서는 범위 제외
-- 다음 명령: 보고서 요청 시 분반·이름·전화번호 뒤 4자리를 받은 후 최종 보고서·PDF 생성 및 전체 페이지 시각 검증
+- 완료: PDF 최소 기능 전체, 인증·상품·검색, 송금·불변 원장·동시성, 신고·제재·감사, 전체·1대1 채팅, 관리자 통합 관리, README, public GitHub, CI/Dependabot/Playwright E2E
+- 현재 작업: 보고서 전 보안·웹 완성도 보강 완료, 커밋·push·GitHub Actions 최종 확인
+- 남음: GitHub Actions 최종 통과 확인, 이후 사용자 요청 시 최종 보고서 원본·PDF와 시각 검증
+- 최근 테스트: 최종 로컬 `67 passed, 2 skipped`; Ruff·format·migration drift·Bandit·pip check·pip-audit·deploy check·비밀 이력·Compose 통과; Docker 29.2.1 이미지 빌드, 비루트 `appuser`, 컨테이너 Django check 통과
+- 주요 결정: Django Admin은 조회 전용으로 제한하고 상태 변경은 사유·전후 값이 감사되는 전용 서비스만 사용; 신고 시간당 10회, 포인트 1회 10억, 지갑 최대 9경 포인트; CSP/Permissions-Policy 적용
+- 알려진 문제: 보고서는 의도적으로 미작성; 운영 배포는 범위 제외; 로컬 SQLite에서는 PostgreSQL·Redis 외부 통합 2건이 skip되며 GitHub Actions에서 실행
+- 다음 실행 명령: `.venv/bin/pytest -q && .venv/bin/ruff check . && .venv/bin/ruff format --check . && bash scripts/scan_secrets.sh`

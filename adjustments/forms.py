@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 
 from users.models import User
 
@@ -14,4 +15,6 @@ class WalletAdjustmentForm(forms.Form):
         amount = self.cleaned_data["amount"]
         if amount == 0:
             raise forms.ValidationError("0은 입력할 수 없습니다.")
+        if abs(amount) > settings.MAX_POINT_TRANSACTION:
+            raise forms.ValidationError("1회 조정 한도를 초과했습니다.")
         return amount

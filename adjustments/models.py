@@ -6,6 +6,12 @@ from wallets.models import LedgerEntry, Wallet
 
 
 class WalletAdjustmentQuerySet(models.QuerySet):
+    def update(self, **kwargs):
+        raise ValidationError("조정 거래는 수정할 수 없습니다.")
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError("조정 거래는 수정할 수 없습니다.")
+
     def delete(self):
         raise ValidationError("조정 거래는 삭제할 수 없습니다.")
 

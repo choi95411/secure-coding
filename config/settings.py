@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "config.middleware.SecurityHeadersMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -116,6 +117,9 @@ CSRF_COOKIE_SECURE = not DEBUG and SECURE_SSL_REDIRECT
 
 INITIAL_WALLET_POINTS = int(os.getenv("INITIAL_WALLET_POINTS", "10000"))
 REPORT_BLOCK_THRESHOLD = int(os.getenv("REPORT_BLOCK_THRESHOLD", "3"))
+REPORTS_PER_HOUR = int(os.getenv("REPORTS_PER_HOUR", "10"))
+MAX_POINT_TRANSACTION = int(os.getenv("MAX_POINT_TRANSACTION", "1000000000"))
+MAX_WALLET_BALANCE = int(os.getenv("MAX_WALLET_BALANCE", "9000000000000000000"))
 CHAT_MESSAGES_PER_MINUTE = int(os.getenv("CHAT_MESSAGES_PER_MINUTE", "20"))
 LOGIN_MAX_FAILURES = int(os.getenv("LOGIN_MAX_FAILURES", "5"))
 LOGIN_FAILURE_WINDOW_SECONDS = int(os.getenv("LOGIN_FAILURE_WINDOW_SECONDS", "300"))
@@ -127,3 +131,16 @@ CHANNEL_LAYERS = {
         "CONFIG": {"hosts": [REDIS_URL]},
     }
 }
+
+CONTENT_SECURITY_POLICY = (
+    "default-src 'self'; "
+    "script-src 'self'; "
+    "style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; "
+    "img-src 'self' data:; "
+    "connect-src 'self' ws: wss:; "
+    "object-src 'none'; "
+    "base-uri 'self'; "
+    "form-action 'self'; "
+    "frame-ancestors 'none'"
+)
+PERMISSIONS_POLICY = "camera=(), microphone=(), geolocation=(), payment=()"

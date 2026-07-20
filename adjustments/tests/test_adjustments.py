@@ -44,6 +44,24 @@ class WalletAdjustmentTests(TestCase):
         self.assertEqual(self.user.wallet.balance, 10_000)
         self.assertFalse(WalletAdjustment.objects.exists())
 
+    def test_adjustment_amount_and_resulting_balance_are_bounded(self):
+        with self.assertRaises(ValidationError):
+            adjust_wallet(
+                actor=self.admin,
+                user=self.user,
+                amount=1_000_000_001,
+                reason="조정 한도 초과 검증",
+            )
+        with self.settings(MAX_WALLET_BALANCE=10_000):
+            with self.assertRaises(ValidationError):
+                adjust_wallet(
+                    actor=self.admin,
+                    user=self.user,
+                    amount=1,
+                    reason="잔액 한도 초과 검증",
+                )
+        self.assertFalse(WalletAdjustment.objects.exists())
+
     def test_failure_rolls_back_balance_ledger_adjustment_and_audit(self):
         initial_entries = self.user.wallet.ledger_entries.count()
         with mock.patch(

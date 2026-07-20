@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from moderation.models import AdminAuditLog
+from moderation.models import AdminAuditLog, ModerationAction
 
 User = get_user_model()
 
@@ -28,3 +28,23 @@ class AdminAuditImmutabilityTests(TestCase):
             log.delete()
         with self.assertRaises(ValidationError):
             AdminAuditLog.objects.all().delete()
+
+    def test_moderation_action_cannot_be_changed_or_deleted(self):
+        action = ModerationAction.objects.create(
+            actor=None,
+            action="auto_block_product",
+            target_type="product",
+            target_id="1",
+            reason="자동 제재 불변성 검증",
+            before={"status": "available"},
+            after={"status": "blocked"},
+        )
+        action.reason = "변조"
+        with self.assertRaises(ValidationError):
+            action.save()
+        with self.assertRaises(ValidationError):
+            action.delete()
+        with self.assertRaises(ValidationError):
+            ModerationAction.objects.filter(pk=action.pk).update(reason="변조")
+        with self.assertRaises(ValidationError):
+            ModerationAction.objects.all().delete()

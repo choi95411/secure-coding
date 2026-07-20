@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from uuid import UUID
 
+from django.conf import settings
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 
@@ -29,8 +30,11 @@ def _failed(transfer, code):
 
 @transaction.atomic
 def transfer_points(*, sender: User, recipient: User, amount: int, idempotency_key: UUID):
+    amount = int(amount)
     if amount <= 0:
         raise ValueError("송금액은 양의 정수여야 합니다.")
+    if amount > settings.MAX_POINT_TRANSACTION:
+        raise ValueError("1회 송금 한도를 초과했습니다.")
     existing = Transfer.objects.filter(sender=sender, idempotency_key=idempotency_key).first()
     if existing:
         if existing.recipient_id != recipient.id or existing.amount != amount:
@@ -57,7 +61,9 @@ def transfer_points(*, sender: User, recipient: User, amount: int, idempotency_k
 
     users = {
         user.pk: user
-        for user in User.objects.select_for_update().filter(pk__in=(sender.pk, recipient.pk))
+        for user in User.objects.select_for_update()
+        .filter(pk__in=(sender.pk, recipient.pk))
+        .order_by("pk")
     }
     if users[sender.pk].status != User.Status.ACTIVE or not users[sender.pk].is_active:
         return _failed(transfer, "sender_inactive")
@@ -74,6 +80,8 @@ def transfer_points(*, sender: User, recipient: User, amount: int, idempotency_k
     recipient_wallet = wallets[recipient.pk]
     if sender_wallet.balance < amount:
         return _failed(transfer, "insufficient_balance")
+    if recipient_wallet.balance > settings.MAX_WALLET_BALANCE - amount:
+        return _failed(transfer, "recipient_balance_limit")
 
     sender_wallet.balance -= amount
     recipient_wallet.balance += amount

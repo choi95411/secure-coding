@@ -8,14 +8,24 @@
 
 ## 최근 결과
 
-- SQLite 전체 회귀: `57 passed, 2 skipped` (2026-07-20).
+- 보고서 전 보안 보강 대상 회귀: `60 passed, 2 skipped`; 관리자 공통화 회귀 수정 후 관련 `49 passed, 1 skipped` (2026-07-20).
+- 최종 SQLite 전체 회귀: `67 passed, 2 skipped`; skip된 PostgreSQL·Redis 외부 통합 2건은 CI에서 실행한다.
 - Ruff lint/format, migration drift, Bandit: 통과.
 - PostgreSQL 송금 동시성: 실제 `postgres:17-alpine` 환경에서 `1 passed`.
 - Redis 채널 계층 테스트: WSL Redis 8.0.5를 56379 포트에서 영속화 없이 격리 실행해 `1 passed`.
-- Playwright 브라우저 E2E: 핵심 흐름의 Django 통합 테스트는 통과했으나 전용 브라우저 런타임 초기화 오류로 실제 브라우저 실행은 작업 4에서 재시도.
+- Playwright 브라우저 E2E: GitHub Actions에서 핵심 전체 흐름과 네 화면 증빙 생성까지 통과.
 
 핵심 E2E 순서는 A/B 가입 → A 상품 등록 → B 검색·상세 → 1대1 채팅 → B가 A에게 포인트 송금 → 잔액/원장 → 신고 → 관리자 제재 → 일반 사용자 관리자 접근 차단이다.
 
 ## GitHub Actions 검증
 
 [main CI 29720091057](https://github.com/choi95411/secure-coding/actions/runs/29720091057)에서 Actions v7 전 단계가 통과했다. Ubuntu, Python 3.13, PostgreSQL 17, Redis 7.4 서비스에서 migration drift, Ruff, Bandit, pip-audit, Django deploy check, 전체 pytest(외부 통합 포함), Docker Compose 구성·이미지 빌드를 수행한다. 이후 Daphne를 실행하고 Playwright Chromium으로 가입 → 상품 등록·검색 → 1대1 WebSocket 채팅 → 송금·양측 잔액 → 신고 → 관리자 제재 → 일반 사용자 관리자 403을 검증하며 네 화면과 서버 로그를 `e2e-evidence` 아티팩트로 보존한다.
+
+## 보고서 전 보안 회귀 추가
+
+- Django Admin 사용자·상품·신고 직접 변경 403 및 원본 상태 불변
+- 원장·조정·제재·감사 로그의 인스턴스 및 QuerySet 수정/삭제 차단
+- 비활성 사용자의 신고와 서로 다른 대상 시간당 신고 도배 차단
+- 상품 가격, 송금·조정 1회 금액, 지갑 잔액 상한
+- CSP에서 인라인 스크립트 금지, Permissions-Policy, 외부 정적 채팅 스크립트
+- 사용자 친화적 403·404와 내부 Traceback 비노출

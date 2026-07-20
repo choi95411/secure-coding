@@ -59,7 +59,9 @@ def dashboard(request):
         {
             "reports": Report.objects.select_related("reporter", "target_user", "target_product")[
                 :100
-            ]
+            ],
+            "users": User.objects.select_related("profile").order_by("username")[:100],
+            "products": Product.objects.select_related("seller").order_by("-created_at")[:100],
         },
     )
 
