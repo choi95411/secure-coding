@@ -18,4 +18,4 @@
 
 ## GitHub Actions 검증
 
-Ubuntu, Python 3.13, PostgreSQL 17, Redis 7.4 서비스에서 migration drift, Ruff, Bandit, pip-audit, Django deploy check, 전체 pytest(외부 통합 포함), Docker Compose 구성·이미지 빌드를 수행한다. 이후 Daphne를 실행하고 Playwright Chromium으로 가입 → 상품 등록·검색 → 1대1 WebSocket 채팅 → 송금·양측 잔액 → 신고 → 관리자 제재 → 일반 사용자 관리자 403을 검증하며 네 화면과 서버 로그를 `e2e-evidence` 아티팩트로 보존한다.
+실제 main CI 실행에서 전 단계 통과했다. Ubuntu, Python 3.13, PostgreSQL 17, Redis 7.4 서비스에서 migration drift, Ruff, Bandit, pip-audit, Django deploy check, 전체 pytest(외부 통합 포함), Docker Compose 구성·이미지 빌드를 수행한다. 이후 Daphne를 실행하고 Playwright Chromium으로 가입 → 상품 등록·검색 → 1대1 WebSocket 채팅 → 송금·양측 잔액 → 신고 → 관리자 제재 → 일반 사용자 관리자 403을 검증하며 네 화면과 서버 로그를 `e2e-evidence` 아티팩트로 보존한다.

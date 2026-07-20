@@ -15,9 +15,9 @@
 - [x] pip check와 pip-audit 통과
 - [x] Ruff, format, Bandit, Django deploy check 통과
 - [x] 전체 Git 이력 비밀 패턴 검사
-- [ ] 저장소 public 전환 및 push
-- [ ] GitHub Actions 전체 통과
-- [ ] E2E 화면 아티팩트 확인
+- [x] 저장소 public 전환 및 push
+- [x] GitHub Actions 전체 통과
+- [x] E2E 화면 아티팩트 다운로드 및 4장 시각 검증
 
 ## 이번 요청에서 제외
 

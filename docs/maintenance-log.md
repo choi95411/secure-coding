@@ -30,3 +30,6 @@
 - 신고 대시보드에서 사유·전후 상태가 감사되는 사용자/상품 제재 화면으로 이동할 수 있게 하고 권한 테스트를 추가했다.
 - Dependabot 주간 pip·Actions 점검과 커밋 인덱스/전체 Git 이력 비밀 패턴 검사를 추가했다.
 - 전체 회귀 `57 passed, 2 skipped`와 로컬 pip check·pip-audit, Git 이력 `.env`·토큰·개인키 검사, Compose 구문, Django deploy check를 통과했다.
+- 저장소를 public으로 전환하고 main을 push했다. 첫 CI는 E2E 관리자 스크립트 import 경로 문제로 실패했으며 모듈 실행으로 수정했다.
+- 수정 CI에서 PostgreSQL·Redis 전체 테스트, Docker 빌드와 Playwright 핵심 흐름이 모두 통과했다. E2E 화면 4장을 내려받아 한글·레이아웃·민감정보를 시각 확인하고 README에 반영했다.
+- GitHub 공식 최신 릴리스에 맞춰 checkout, setup-python, upload-artifact를 v7로 갱신했다.
