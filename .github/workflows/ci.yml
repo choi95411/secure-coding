@@ -94,7 +94,7 @@ jobs:
       - name: Prepare E2E database
         run: |
           python manage.py migrate --noinput
-          python scripts/create_e2e_admin.py
+          python -m scripts.create_e2e_admin
       - name: Playwright core journey
         run: bash scripts/run_e2e.sh
       - name: Upload E2E evidence
