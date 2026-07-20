@@ -64,6 +64,19 @@ class AdminModerationTests(TestCase):
                 actor=self.user, target=self.product, action="block", reason="권한 없는 제재"
             )
 
+    def test_dashboard_links_report_to_audited_management_flow(self):
+        file_report(
+            reporter=User.objects.create_user("dashboard-reporter", password="Test-Password-123!"),
+            target=self.product,
+            reason="관리자 화면 연결 확인",
+        )
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("moderation:dashboard"))
+        self.assertContains(
+            response,
+            reverse("moderation:moderate_product", args=[self.product.pk]),
+        )
+
     def test_admin_action_records_before_after_and_audit(self):
         moderate_target(
             actor=self.admin, target=self.product, action="block", reason="악성 상품 확인"

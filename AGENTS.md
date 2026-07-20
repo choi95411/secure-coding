@@ -20,7 +20,9 @@
 - Test: `.venv/bin/pytest`
 - Lint: `.venv/bin/ruff check .`
 - Format check: `.venv/bin/ruff format --check .`
-- Security: `.venv/bin/bandit -c pyproject.toml -r config users products wallets moderation adjustments chat security_controls`
+- Security: `.venv/bin/bandit -c pyproject.toml -r config users products wallets moderation adjustments chat security_controls && .venv/bin/pip-audit -r requirements.txt`
+- Secret history: `bash scripts/scan_secrets.sh`
+- E2E: `bash scripts/run_e2e.sh` (PostgreSQL, Redis, Playwright Chromium and E2E environment variables required)
 
 ## Rules
 

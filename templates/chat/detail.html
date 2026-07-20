@@ -18,7 +18,7 @@
 <form id="chat-form" class="input-group">
   <label class="visually-hidden" for="chat-input">메시지</label>
   <input id="chat-input" class="form-control" maxlength="1000" required autocomplete="off">
-  <button class="btn btn-primary">전송</button>
+  <button id="chat-submit" class="btn btn-primary" disabled>전송</button>
 </form>
 <p id="chat-error" class="text-danger" role="alert"></p>
 {{ conversation.pk|json_script:"conversation-id" }}
@@ -30,6 +30,8 @@ const form = document.getElementById('chat-form');
 const input = document.getElementById('chat-input');
 const box = document.getElementById('messages');
 const error = document.getElementById('chat-error');
+const submit = document.getElementById('chat-submit');
+socket.onopen = () => { submit.disabled = false; };
 socket.onmessage = (event) => {
   const data = JSON.parse(event.data);
   if (data.error) { error.textContent = data.error; return; }
@@ -41,7 +43,7 @@ socket.onmessage = (event) => {
   box.appendChild(paragraph);
   box.scrollTop = box.scrollHeight;
 };
-socket.onclose = () => { error.textContent = '채팅 연결이 종료되었습니다.'; };
+socket.onclose = () => { submit.disabled = true; error.textContent = '채팅 연결이 종료되었습니다.'; };
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   error.textContent = '';

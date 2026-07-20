@@ -13,6 +13,6 @@
 | MOD-01 | 상품 차단·사용자 휴면/차단/복구 / 관리자 | 처리 사유와 전후 상태 감사 기록 | 일반 사용자 403, 감사 로그 변경 금지 | 제재·복구·관리자 권한 테스트 | `moderation/` / `moderation/tests/test_moderation.py` | DONE |
 | PAY-01 | 내부 포인트 송금 / 활성 사용자 | 지갑·불변 원장·단일 트랜잭션·행 잠금·멱등 키 | 양의 정수, 자기 송금·초과 잔액·중복·비활성 거절, 전체 롤백 | 동시 송금 시 음수 불가, 원장 정합성 | `wallets/`, `adjustments/` / 송금·조정·PostgreSQL 동시성 테스트 | DONE |
 | ADMIN-01 | 플랫폼 전체 관리 / 관리자 | 사용자·프로필·상품·신고·제재·메시지·송금·조정·감사 조회/처리 | 서버 측 staff 권한, 상태 변경 사유와 전후 값 감사, 원장 직접 수정 금지 | 일반 사용자 관리 URL 직접 호출 403 | Django Admin + `moderation/`, `adjustments/`, `chat/admin.py` / 관리자 권한·통합 흐름 테스트 | DONE |
-| DOC-01 | 공개 GitHub·README·보고서 / 제출자 | 실행 절차, 보안 약점, 테스트 결과, 링크, 지정 파일명 | 비밀·개인정보·임시 파일 제외 | public 저장소·CI·렌더링 보고서 확인 | `README.md`, `docs/`, 후속 보고서 | PLANNED |
+| DOC-01 | 공개 GitHub·README·보고서 / 제출자 | 실행 절차, 보안 약점, 테스트 결과, 링크, 지정 파일명 | 비밀·개인정보·임시 파일 제외 | public 저장소·CI·렌더링 보고서 확인 | `README.md`, `.github/`, `docs/`, 후속 보고서 | IN_PROGRESS |
 
 PDF 35페이지의 가입, 상품, 소통, 악성 대상 차단, 송금, 검색, 관리자 관리 항목은 각각 AUTH/USER, PROD, CHAT, REPORT/MOD, PAY, SEARCH, ADMIN에 일대일 대응한다.

@@ -8,10 +8,14 @@
 
 ## 최근 결과
 
-- SQLite 전체 회귀: `56 passed, 2 skipped` (2026-07-20).
+- SQLite 전체 회귀: `57 passed, 2 skipped` (2026-07-20).
 - Ruff lint/format, migration drift, Bandit: 통과.
 - PostgreSQL 송금 동시성: 실제 `postgres:17-alpine` 환경에서 `1 passed`.
 - Redis 채널 계층 테스트: WSL Redis 8.0.5를 56379 포트에서 영속화 없이 격리 실행해 `1 passed`.
 - Playwright 브라우저 E2E: 핵심 흐름의 Django 통합 테스트는 통과했으나 전용 브라우저 런타임 초기화 오류로 실제 브라우저 실행은 작업 4에서 재시도.
 
 핵심 E2E 순서는 A/B 가입 → A 상품 등록 → B 검색·상세 → 1대1 채팅 → B가 A에게 포인트 송금 → 잔액/원장 → 신고 → 관리자 제재 → 일반 사용자 관리자 접근 차단이다.
+
+## GitHub Actions 검증
+
+Ubuntu, Python 3.13, PostgreSQL 17, Redis 7.4 서비스에서 migration drift, Ruff, Bandit, pip-audit, Django deploy check, 전체 pytest(외부 통합 포함), Docker Compose 구성·이미지 빌드를 수행한다. 이후 Daphne를 실행하고 Playwright Chromium으로 가입 → 상품 등록·검색 → 1대1 WebSocket 채팅 → 송금·양측 잔액 → 신고 → 관리자 제재 → 일반 사용자 관리자 403을 검증하며 네 화면과 서버 로그를 `e2e-evidence` 아티팩트로 보존한다.
