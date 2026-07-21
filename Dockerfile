@@ -6,6 +6,7 @@ RUN useradd --create-home --uid 10001 appuser
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
+RUN mkdir -p /app/media /app/staticfiles
 RUN python manage.py collectstatic --noinput
 RUN chown -R appuser:appuser /app
 USER appuser

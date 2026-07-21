@@ -1,0 +1,171 @@
+{
+  "input": "C:\\Users\\choi9\\Desktop\\\uc22d\uc2e4 3-2\\\ud654\ud587\\whs4-0614-\ud574\ucee4\uc758\ud504\ub85c\uadf8\ub798\ubc0d\\\ubcf4\uace0\uc11c \uc900\uc644\uc131.docx",
+  "fonts_by_char_count": {
+    "\ub9d1\uc740 \uace0\ub515": 7400,
+    "Consolas": 4419
+  },
+  "direct_run_formatting_runs": 1316,
+  "direct_paragraph_formatting_paragraphs": 204,
+  "heading_like_paragraphs_not_heading_style": [
+    {
+      "para_index": 2,
+      "text": "\uc0ac\uc6a9\uc790 \ud65c\ub3d9 \uc2dc\uac04\ub300 \ubd84\uc11d",
+      "style": "Normal"
+    },
+    {
+      "para_index": 4,
+      "text": "\uc791\uc131\uc77c 2026\ub144 7\uc6d4 14\uc77c ",
+      "style": "Normal"
+    },
+    {
+      "para_index": 19,
+      "text": "Q1. \ucc28\ud2b8\ub85c \ud45c\ud604\ud558\uae30",
+      "style": "Normal"
+    },
+    {
+      "para_index": 21,
+      "text": "1.1 \uc8fc\uc694 \ud544\ub4dc\uc758 \uc758\ubbf8",
+      "style": "Normal"
+    },
+    {
+      "para_index": 27,
+      "text": "1.2 Decl, FuncDecl, FuncDef \uad6c\ubd84",
+      "style": "Normal"
+    },
+    {
+      "para_index": 29,
+      "text": "1.3 ext \ubc30\uc5f4\uacfc \ud568\uc218 \uac1c\uc218",
+      "style": "Normal"
+    },
+    {
+      "para_index": 31,
+      "text": "2. \ubd84\uc11d\uae30 \uc124\uacc4 \ubc0f \uad6c\ud604",
+      "style": "Normal"
+    },
+    {
+      "para_index": 32,
+      "text": "2.1 \ubd84\uc11d\uae30 \uc804\uccb4 \uc18c\uc2a4\ucf54\ub4dc",
+      "style": "Normal"
+    },
+    {
+      "para_index": 33,
+      "text": "2.2 get_type \ud568\uc218",
+      "style": "Normal"
+    },
+    {
+      "para_index": 37,
+      "text": "2.3 count_if \ud568\uc218",
+      "style": "Normal"
+    },
+    {
+      "para_index": 42,
+      "text": "2.4 main \ud568\uc218\uc758 \ud750\ub984",
+      "style": "Normal"
+    },
+    {
+      "para_index": 45,
+      "text": "2.5 \ud30c\uc77c \uc77d\uae30\uc640 JSON \uc0dd\uc131",
+      "style": "Normal"
+    },
+    {
+      "para_index": 48,
+      "text": "2.6 ext \ubc30\uc5f4\uc5d0\uc11c \ud568\uc218 \ucc3e\uae30",
+      "style": "Normal"
+    },
+    {
+      "para_index": 51,
+      "text": "2.7 \ud568\uc218 \uc774\ub984\uacfc \ubc18\ud658\ud615 \ucc3e\uae30",
+      "style": "Normal"
+    },
+    {
+      "para_index": 55,
+      "text": "2.8 \ud30c\ub77c\ubbf8\ud130 \ucc3e\uae30",
+      "style": "Normal"
+    },
+    {
+      "para_index": 58,
+      "text": "2.9 if \uac1c\uc218 \uc138\uae30",
+      "style": "Normal"
+    },
+    {
+      "para_index": 61,
+      "text": "3. \uc2e4\ud589 \uacb0\uacfc",
+      "style": "Normal"
+    },
+    {
+      "para_index": 62,
+      "text": "3.1 \uacb0\uacfc \uc694\uc57d",
+      "style": "Normal"
+    },
+    {
+      "para_index": 65,
+      "text": "3.2 \uc804\uccb4 \ud568\uc218 \ubd84\uc11d \uacb0\uacfc",
+      "style": "Normal"
+    },
+    {
+      "para_index": 68,
+      "text": "4. \uc6d0\ubcf8 \uc18c\uc2a4\ucf54\ub4dc \ubcf5\uc6d0",
+      "style": "Normal"
+    }
+  ],
+  "examples": {
+    "direct_paragraph_formatting": [
+      {
+        "para_index": 1,
+        "text": "",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "text": "[38\ubc18 / \ucd5c\ubbfc\ud601 / 5694]",
+        "style": "Normal"
+      },
+      {
+        "para_index": 95,
+        "text": "#include <stdio.h>",
+        "style": "Normal"
+      },
+      {
+        "para_index": 96,
+        "text": "#include <stdlib.h>",
+        "style": "Normal"
+      },
+      {
+        "para_index": 97,
+        "text": "#include <string.h>",
+        "style": "Normal"
+      }
+    ],
+    "direct_run_formatting": [
+      {
+        "para_index": 2,
+        "run_text": "\uc0ac\uc6a9\uc790 \ud65c\ub3d9 \uc2dc\uac04\ub300 \ubd84\uc11d",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "run_text": "[",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "run_text": "38",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "run_text": "\ubc18 /",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "run_text": " ",
+        "style": "Normal"
+      }
+    ]
+  },
+  "notes": [
+    "Direct formatting is not always wrong, but it often causes inconsistent output when templates change.",
+    "Heading-like paragraphs not using Heading styles can break TOC and accessibility."
+  ]
+}

@@ -7,6 +7,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - static_data:/app/staticfiles
       - media_data:/app/media
     depends_on:
       db:
@@ -40,4 +41,5 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  static_data:
   media_data:

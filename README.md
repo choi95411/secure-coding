@@ -158,4 +158,3 @@ Django ORM 바인딩, CSRF, 세션 회전, HttpOnly/SameSite 쿠키, CSP·Permis
 - 교육용 내부 포인트이며 외부 결제·실물 화폐·추천 시스템을 지원하지 않습니다.
 - 로컬 Codex 브라우저 런타임 오류 때문에 브라우저 E2E는 GitHub Actions에서 수행합니다.
 - 운영 배포 서비스는 범위 밖이며 로컬 Docker와 GitHub Actions까지만 지원합니다.
-- 최종 보고서 작성과 PDF 시각 검증은 사용자의 이번 요청에 따라 제외했습니다.
