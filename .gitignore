@@ -12,6 +12,8 @@ staticfiles/*
 !staticfiles/.gitkeep
 playwright-report/
 test-results/
+docs/report_work/
+~$*.docx
 tmp/
 output/
 .idea/
